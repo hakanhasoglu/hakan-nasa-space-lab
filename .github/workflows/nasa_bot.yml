@@ -2,7 +2,7 @@ name: NASA Gunluk Veri Botu
 
 on:
   schedule:
-    - cron: '0 9 * * *' # Her sabah 09:00'da çalışır
+    - cron: '0 9 * * *' # Her sabah 09:00'da otomatik çalışır
   workflow_dispatch: # İstersen elinle de başlatabilirsin
 
 jobs:
@@ -19,13 +19,16 @@ jobs:
       - name: Kutuphaneleri Yukle
         run: pip install requests
         
-      - name: Veriyi Cek
+      - name: NASA APOD Verisini Cek
         run: python scripts/nasa_pull.py
+
+      - name: Mars Verisini Cek
+        run: python scripts/mars_explorer.py
         
       - name: GitHub'a Kaydet
         run: |
           git config --global user.name "hakan-nasa-bot"
           git config --global user.email "bot@hakan.com"
           git add data/
-          git commit -m "Otomatik NASA Guncellemesi: $(date)" || exit 0
+          git commit -m "Otomatik Uzay Guncellemesi: $(date)" || exit 0
           git push
